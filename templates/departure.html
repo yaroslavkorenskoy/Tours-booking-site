@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block main %}
+  <main class="container mt-3">
+    <h1 class="display-5 mt-4">Летим из {{ departure[3:] }}</h1>
+
+    {% set max_price = (tours | max(attribute='price')).price %}
+    {% set min_price = (tours | min(attribute='price')).price %}
+
+    {% set max_nights = (tours | max(attribute='nights')).nights %}
+    {% set min_nights = (tours | min(attribute='nights')).nights %}
+
+    <p class="mb-4">Найдено {{ tours|length  }} туров, от {{ min_price | format_price }} до {{ max_price | format_price }} и от {{ min_nights }} ночей до {{ max_nights }} ночей</p>
+    <!-- CARDS -->
+    <div class="row mt-5">
+
+      {% for tour in tours %}
+        <div class="col-4">
+          <div class="card mb-4">
+            <img src="{{ tour.picture }}" class="card-img-top img-fluid" alt="">
+            <div class="card-body">
+              <h2 class="h5 card-title">{{ tour.title }}</h2>
+              <p class="card-text">{{ tour.description | truncate(100) }}</p>
+              <a href="/tours/{{ tour.id }}/"
+                 class="btn btn-sm btn-primary">{{ tour.country }} {{ tour.price | format_price }} {{ tour.stars }}*</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+  </main>
+{% endblock %}
